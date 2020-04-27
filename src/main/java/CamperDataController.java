@@ -1,6 +1,6 @@
 public class CamperDataController {
     CamperDataController() {
-        dataConnect();
+//        dataConnect();
         makeGui();
     }
 
@@ -10,6 +10,10 @@ public class CamperDataController {
     }
 
     void makeGui() {
-        new CamperDataTerminal();
+        new CamperDataTerminal(this);
+    }
+
+    void processEditCamper() {
+        throw new UnsupportedOperationException();
     }
 }
