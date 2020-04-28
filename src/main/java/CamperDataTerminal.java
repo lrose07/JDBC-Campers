@@ -80,20 +80,26 @@ class CamperDataTerminal extends JFrame {
 
     void saveClicked() {
         if (!camperFirstNameBox.getText().equals(currentCamper.getFirstName())) {
+            System.out.println("Updating first name...");
             currentCamper.setFirstName(camperFirstNameBox.getText());
         }
         if (!camperLastNameBox.getText().equals(currentCamper.getLastName())) {
+            System.out.println("Updating last name...");
             currentCamper.setLastName(camperLastNameBox.getText());
         }
         if (!camperNickNameBox.getText().equals(currentCamper.getNickName())) {
+            System.out.println("Updating nickname...");
             currentCamper.setNickName(camperNickNameBox.getText());
         }
         if (currentCamper.getCampStoreBudget() != Double.parseDouble(camperStoreBudgetBox.getText())) {
+            System.out.println("Updating budget...");
             currentCamper.setCampStoreBudget(Double.parseDouble(camperStoreBudgetBox.getText()));
         }
         if (currentCamper.getCampStoreSpent() != Double.parseDouble(camperStoreSpentBox.getText())) {
+            System.out.println("Updating spent amount...");
             currentCamper.setCampStoreSpent(Double.parseDouble(camperStoreSpentBox.getText()));
         }
+        System.out.println("Saving to db...");
         controller.processEditCamper(currentCamper);
     }
 

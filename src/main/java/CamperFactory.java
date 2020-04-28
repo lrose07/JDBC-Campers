@@ -86,20 +86,25 @@ public class CamperFactory {
     }
 
     void editCamper(Camper c) {
-        StringBuilder sb = new StringBuilder();
-        sb.append("UPDATE campers SET ");
-        sb.append("firstname = '").append(c.getFirstName()).append("'");
-        sb.append("lastname = ").append(c.getLastName()).append("'");
-        sb.append("nickname = ").append(c.getNickName()).append("'");
-        sb.append("campstorebudget = ").append(c.getCampStoreBudget()).append("'");
-        sb.append("campstorespent = ").append(c.getCampStoreSpent()).append("'");
-        sb.append("WHERE cid = ").append(c.getCamperID());
-
-        String sqlQuery = sb.toString();
+        System.out.println("Beginning db update...");
+        String sqlQuery = String.format(
+                "UPDATE campers SET " +
+                        "firstname = '%s', " +
+                        "lastname = '%s', " +
+                        "nickname = '%s', " +
+                        "campstorebudget = %f, " +
+                        "campstorespent = %f " +
+                        "WHERE cid = %d",
+                c.getFirstName(),
+                c.getLastName(),
+                c.getNickName(),
+                c.getCampStoreBudget(),
+                c.getCampStoreSpent(),
+                c.getCamperID());
         try(Statement statement = con.createStatement()) {
-            statement.executeUpdate(sqlQuery);
+            System.out.println("Rows updated: " + statement.executeUpdate(sqlQuery));
         } catch (SQLException e) {
-            //todo:handle
+            System.out.println("Something went wrong\n" + e);
         }
     }
 
