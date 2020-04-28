@@ -43,45 +43,32 @@ public class CamperFactory {
     }
 
     Camper getCamperByFirstName(String firstName) {
-        Camper newCamper = null;
         String sqlQuery = String.format("SELECT * FROM campers WHERE firstname = '%s'", stringUpcaseFirst(firstName));
+        return generateCamper(sqlQuery);
+    }
+
+    Camper getCamperByLastName(String lastName) {
+        String sqlQuery = String.format("SELECT * FROM campers WHERE lastname = '%s'", stringUpcaseFirst(lastName));
+        return generateCamper(sqlQuery);
+    }
+
+    Camper generateCamper(String sqlQuery) {
         try(Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 int cId = resultSet.getInt(ID_STR);
+                String fName = resultSet.getString(F_NAME_STR);
                 String lName = resultSet.getString(L_NAME_STR);
                 String nName = resultSet.getString(N_NAME_STR);
                 double budget = resultSet.getDouble(BUDGET_STR);
                 double spent = resultSet.getDouble(SPENT_STR);
                 int revnum = resultSet.getInt(REV_NUM_STR);
-                newCamper = new Camper(cId, firstName, lName, nName, budget, spent, revnum);
+                return new Camper(cId, fName, lName, nName, budget, spent, revnum);
             }
         } catch (SQLException e) {
             System.out.println(FAILED + e.getMessage());
         }
-
-        return newCamper;
-    }
-
-    Camper getCamperByLastName(String lastName) {
-        Camper newCamper = null;
-        String sqlQuery = String.format("SELECT * FROM campers WHERE lastname = '%s'", stringUpcaseFirst(lastName));
-        try(Statement statement = con.createStatement();
-            ResultSet resultSet = statement.executeQuery(sqlQuery)) {
-            while (resultSet.next()) {
-                int cId = resultSet.getInt(ID_STR);
-                String fName = resultSet.getString(F_NAME_STR);
-                String nName = resultSet.getString(N_NAME_STR);
-                double budget = resultSet.getDouble(BUDGET_STR);
-                double spent = resultSet.getDouble(SPENT_STR);
-                int revnum = resultSet.getInt(REV_NUM_STR);
-                newCamper = new Camper(cId, fName, lastName, nName, budget, spent, revnum);
-            }
-        } catch (SQLException e) {
-            System.out.println(FAILED + e.getMessage());
-        }
-
-        return newCamper;
+        return null;
     }
 
     void editCamper(Camper c) {

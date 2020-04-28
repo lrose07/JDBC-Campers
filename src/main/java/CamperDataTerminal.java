@@ -48,6 +48,7 @@ class CamperDataTerminal extends JFrame {
     }
 
     void searchClicked() {
+        clearClicked();
         try {
             currentCamper = controller.findCamperById(Integer.parseInt(camperSearchBox.getText()));
         } catch (NumberFormatException e) {
