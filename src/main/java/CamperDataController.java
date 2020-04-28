@@ -1,11 +1,13 @@
 public class CamperDataController {
 
     private CamperFactory cf;
+    private int revNumOriginal;
+    private int camperId;
 
     CamperDataController() {
         dataConnect();
-//        makeGui();
-        cf.getCamper(104);
+        makeGui();
+//        System.out.println(cf.getCamper(103).toString());
 
     }
 
@@ -18,11 +20,36 @@ public class CamperDataController {
         new CamperDataTerminal(this);
     }
 
-    void processEditCamper() {
-        throw new UnsupportedOperationException();
+    Camper findCamperById(int id) {
+        Camper cmpr = cf.getCamperById(id);
+        getInitialData(cmpr);
+        return cmpr;
     }
 
-    void processAddCamper() {
-
+    Camper findCamperByName(String name) {
+        Camper cmpr = cf.getCamperByFirstName(name);
+        if (cmpr == null) {
+            cmpr = cf.getCamperByLastName(name);
+        }
+        getInitialData(cmpr);
+        return cmpr;
     }
+
+    void getInitialData(Camper c) {
+        if (c != null) {
+            camperId = c.getCamperID();
+            revNumOriginal = c.getRevNum();
+        }
+    }
+
+    void processEditCamper(Camper newCamper) {
+        Camper cmpr2 = cf.getCamperById(camperId);
+        if (cmpr2.getRevNum() == revNumOriginal) {
+            cf.editCamper(newCamper);
+        }
+    }
+
+//    void processAddCamper() {
+//
+//    }
 }

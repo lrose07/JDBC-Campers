@@ -1,4 +1,3 @@
-import org.jdesktop.swingx.StackLayout;
 import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
@@ -8,14 +7,11 @@ import java.util.logging.Logger;
 
 class CamperDataTerminal extends JFrame {
 
-    private CamperDataController controller;
-    Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+    private final CamperDataController controller;
+    private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
-    private JPanel mainPanel;
     private JPanel headerPanel;
     private JPanel inputPanel;
-    private JPanel searchPanel;
-    private JPanel addPanel;
 
     private JTextField camperSearchBox;
     private JButton searchButton;
@@ -26,28 +22,29 @@ class CamperDataTerminal extends JFrame {
     private JTextField camperNickNameBox;
     private JTextField camperStoreBudgetBox;
     private JTextField camperStoreSpentBox;
-    private JLabel camperRevNumLabelBox;
+    private JLabel camperRevNumLabel;
     private JButton saveButton;
     private JButton clearButton;
+
+    private Camper currentCamper;
 
     CamperDataTerminal(CamperDataController controller) {
         this.controller = controller;
 
         // main panel
-        mainPanel = new JPanel();
+        JPanel mainPanel = new JPanel();
 //        mainPanel.setBackground(new Color(0, 100, 0));
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setPreferredSize(new Dimension(500, 600));
         mainPanel.setMinimumSize(new Dimension(500, 600));
 
-        buildHeaderPanel();
-        buildInputPanel();
-        buildAddPanel();
-        buildSearchPanel();
+        configureHeaderPanel();
+        configureInputPanel();
 
         // add sub panels to main panel
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(inputPanel, BorderLayout.SOUTH);
+
 
         // set frame properties
         this.setPreferredSize(new Dimension(500, 600));
@@ -58,40 +55,63 @@ class CamperDataTerminal extends JFrame {
     }
 
     void searchClicked() {
-        logger.log(Level.INFO, camperSearchBox.getText());
+        try {
+            currentCamper = controller.findCamperById(Integer.parseInt(camperSearchBox.getText()));
+        } catch (NumberFormatException e) {
+            currentCamper = controller.findCamperByName(camperSearchBox.getText());
+        }
+        if (currentCamper != null) {
+            updateFields();
+        } else {
+            System.out.println("No camper found");
+            //todo: make this a gui notification, not terminal
+        }
+    }
+
+    void updateFields() {
+        camperIdLabel.setText("Camper ID: " + currentCamper.getCamperID());
+        camperFirstNameBox.setText(currentCamper.getFirstName());
+        camperLastNameBox.setText(currentCamper.getLastName());
+        camperNickNameBox.setText(currentCamper.getNickName());
+        camperStoreBudgetBox.setText(String.valueOf(currentCamper.getCampStoreBudget()));
+        camperStoreSpentBox.setText(String.valueOf(currentCamper.getCampStoreSpent()));
+        camperRevNumLabel.setText("RevNum: " + currentCamper.getRevNum());
     }
 
     void saveClicked() {
-        logger.log(Level.INFO, camperFirstNameBox.getText());
-//        controller.processEditCamper();
+        if (!camperFirstNameBox.getText().equals(currentCamper.getFirstName())) {
+            currentCamper.setFirstName(camperFirstNameBox.getText());
+        }
+        if (!camperLastNameBox.getText().equals(currentCamper.getLastName())) {
+            currentCamper.setLastName(camperLastNameBox.getText());
+        }
+        if (!camperNickNameBox.getText().equals(currentCamper.getNickName())) {
+            currentCamper.setNickName(camperNickNameBox.getText());
+        }
+        if (currentCamper.getCampStoreBudget() != Double.parseDouble(camperStoreBudgetBox.getText())) {
+            currentCamper.setCampStoreBudget(Double.parseDouble(camperStoreBudgetBox.getText()));
+        }
+        if (currentCamper.getCampStoreSpent() != Double.parseDouble(camperStoreSpentBox.getText())) {
+            currentCamper.setCampStoreSpent(Double.parseDouble(camperStoreSpentBox.getText()));
+        }
+        controller.processEditCamper(currentCamper);
     }
 
-    void buildHeaderPanel() {
+    void configureHeaderPanel() {
         headerPanel = new JPanel();
-        headerPanel.setPreferredSize(new Dimension(500, 150));
-        headerPanel.setMaximumSize(new Dimension(500, 150));
+        headerPanel.setPreferredSize(new Dimension(500, 50));
+        headerPanel.setMaximumSize(new Dimension(500, 50));
 
         JLabel welcomeLabel = new JLabel("Welcome to the Camper Info System!");
 
-        JButton addCamperButton = new JButton("Add a camper");
-        addCamperButton.addActionListener(e -> addCamperClicked());
-
-        JButton editCamperButton = new JButton("View/edit a camper");
-        editCamperButton.addActionListener(e -> editCamperClicked());
         headerPanel.add(welcomeLabel);
-        headerPanel.add(addCamperButton);
-        headerPanel.add(editCamperButton);
     }
 
-    void buildInputPanel() {
+    void configureInputPanel() {
         inputPanel = new JPanel();
         inputPanel.setPreferredSize(new Dimension(500, 425));
         inputPanel.setMinimumSize(new Dimension(500, 425));
-        inputPanel.setLayout(new StackLayout());
-    }
-
-    void buildSearchPanel() {
-        searchPanel = new JPanel();
+        inputPanel.setLayout(new GridLayout(8, 2));
 
         camperSearchBox = new JTextField(10);
         PromptSupport.setPrompt("Enter search here", camperSearchBox);
@@ -116,7 +136,7 @@ class CamperDataTerminal extends JFrame {
         camperStoreSpentBox = new JTextField();
         PromptSupport.setPrompt("Store spent", camperStoreSpentBox);
 
-        camperRevNumLabelBox = new JLabel("RevNum: ");
+        camperRevNumLabel = new JLabel("RevNum: ");
 
         saveButton = new JButton("Save changes");
         saveButton.addActionListener(e -> saveClicked());
@@ -124,35 +144,23 @@ class CamperDataTerminal extends JFrame {
         clearButton = new JButton("Clear form");
         clearButton.addActionListener(e -> clearClicked());
 
-        searchPanel.add(camperSearchBox);
-        searchPanel.add(searchButton);
-        searchPanel.add(new JLabel("Camper Info:"));
-        searchPanel.add(camperIdLabel);
-        searchPanel.add(camperFirstNameBox);
-        searchPanel.add(camperLastNameBox);
-        searchPanel.add(camperNickNameBox);
-        searchPanel.add(new JLabel(""));
-        searchPanel.add(new JLabel("Camper Finances:"));
-        searchPanel.add(new JLabel(""));
-        searchPanel.add(camperStoreBudgetBox);
-        searchPanel.add(camperStoreSpentBox);
-        searchPanel.add(camperRevNumLabelBox);
-        searchPanel.add(new JLabel(""));
+        inputPanel.add(camperSearchBox);
+        inputPanel.add(searchButton);
+        inputPanel.add(new JLabel("Camper Info:"));
+        inputPanel.add(camperIdLabel);
+        inputPanel.add(camperFirstNameBox);
+        inputPanel.add(camperLastNameBox);
+        inputPanel.add(camperNickNameBox);
+        inputPanel.add(new JLabel(""));
+        inputPanel.add(new JLabel("Camper Finances:"));
+        inputPanel.add(new JLabel(""));
+        inputPanel.add(camperStoreBudgetBox);
+        inputPanel.add(camperStoreSpentBox);
+        inputPanel.add(camperRevNumLabel);
+        inputPanel.add(new JLabel(""));
 
-        searchPanel.add(saveButton);
-        searchPanel.add(clearButton);
-    }
-
-    void buildAddPanel() {
-
-    }
-
-    void addCamperClicked() {
-
-    }
-
-    void editCamperClicked() {
-
+        inputPanel.add(saveButton);
+        inputPanel.add(clearButton);
     }
 
     void clearClicked() {
@@ -164,6 +172,6 @@ class CamperDataTerminal extends JFrame {
         camperNickNameBox.setText("");
         camperStoreBudgetBox.setText("");
         camperStoreSpentBox.setText("");
-        camperRevNumLabelBox.setText("RevNum: ");
+        camperRevNumLabel.setText("RevNum: ");
     }
 }
