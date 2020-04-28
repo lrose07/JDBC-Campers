@@ -1,11 +1,16 @@
 public class CamperDataController {
+
+    private CamperFactory cf;
+
     CamperDataController() {
-//        dataConnect();
-        makeGui();
+        dataConnect();
+//        makeGui();
+        cf.getCamper(104);
+
     }
 
     void dataConnect() {
-        CamperFactory cf = new CamperFactory();
+        cf = new CamperFactory();
         cf.connect();
     }
 
@@ -15,5 +20,9 @@ public class CamperDataController {
 
     void processEditCamper() {
         throw new UnsupportedOperationException();
+    }
+
+    void processAddCamper() {
+
     }
 }

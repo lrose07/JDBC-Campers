@@ -17,30 +17,32 @@ public class CamperFactory {
             DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
             con = DriverManager.getConnection(url,user,password);
         } catch (SQLException e) {
-            // todo: handle
+            System.out.println("failed connection: " + e.getMessage());
         }
     }
 
-    Camper getCamper(int id) {
+    void getCamper(int id) {
         String sqlQuery = String.format("SELECT * FROM campers WHERE cid = %d", id);
+//        String sqlQuery = "SELECT * FROM CAMPERS";
+
         try(Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
-            System.out.println(resultSet.toString());
+            while (resultSet.next()) {
+                System.out.println(resultSet.getString("firstname"));
+            }
         } catch (SQLException e) {
-            // todo: handle
+            System.out.println("failed query: " + e.getMessage());
         }
-
-        return null;
     }
 
-    void saveCamper(Camper newCamper) {
-        new Camper(
-                newCamper.getCamperID(),
-                newCamper.getFirstName(),
-                newCamper.getLastName(),
-                newCamper.getNickName(),
-                newCamper.getCampStoreBudget(),
-                newCamper.getCampStoreSpent()
-        );
-    }
+//    void saveCamper(Camper newCamper) {
+//        new Camper(
+//                newCamper.getCamperID(),
+//                newCamper.getFirstName(),
+//                newCamper.getLastName(),
+//                newCamper.getNickName(),
+//                newCamper.getCampStoreBudget(),
+//                newCamper.getCampStoreSpent()
+//        );
+//    }
 }

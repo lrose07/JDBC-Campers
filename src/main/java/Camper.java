@@ -1,6 +1,6 @@
 public class Camper {
 
-    private int camperID;
+    private final int camperID;
     private String firstName;
     private String lastName;
     private String nickName;
