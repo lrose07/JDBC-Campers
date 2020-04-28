@@ -7,8 +7,6 @@ public class CamperDataController {
     CamperDataController() {
         dataConnect();
         makeGui();
-//        System.out.println(cf.getCamper(103).toString());
-
     }
 
     void dataConnect() {

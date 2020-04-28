@@ -1,5 +1,4 @@
 import java.sql.*;
-import java.util.HashMap;
 
 public class CamperFactory {
 
@@ -29,15 +28,15 @@ public class CamperFactory {
             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
             while (resultSet.next()) {
                 newCamper = new Camper(id);
-                newCamper.setFirstName(resultSet.getString("firstname"));
-                newCamper.setLastName(resultSet.getString("lastname"));
-                newCamper.setNickName(resultSet.getString("nickname"));
-                newCamper.setCampStoreBudget(resultSet.getDouble("campstorebudget"));
-                newCamper.setCampStoreSpent(resultSet.getDouble("campstorespent"));
-                newCamper.setRevNum(resultSet.getInt("revnum"));
+                newCamper.setFirstName(resultSet.getString(F_NAME_STR));
+                newCamper.setLastName(resultSet.getString(L_NAME_STR));
+                newCamper.setNickName(resultSet.getString(N_NAME_STR));
+                newCamper.setCampStoreBudget(resultSet.getDouble(BUDGET_STR));
+                newCamper.setCampStoreSpent(resultSet.getDouble(SPENT_STR));
+                newCamper.setRevNum(resultSet.getInt(REV_NUM_STR));
             }
         } catch (SQLException e) {
-            System.out.println("failed query: " + e.getMessage());
+            System.out.println(FAILED + e.getMessage());
         }
 
         return newCamper;
@@ -49,16 +48,16 @@ public class CamperFactory {
         try(Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
             while (resultSet.next()) {
-                int cId = resultSet.getInt("cid");
-                String lName = resultSet.getString("lastname");
-                String nName = resultSet.getString("nickname");
-                double budget = resultSet.getDouble("campstorebudget");
-                double spent = resultSet.getDouble("campstorespent");
-                int revnum = resultSet.getInt("revnum");
+                int cId = resultSet.getInt(ID_STR);
+                String lName = resultSet.getString(L_NAME_STR);
+                String nName = resultSet.getString(N_NAME_STR);
+                double budget = resultSet.getDouble(BUDGET_STR);
+                double spent = resultSet.getDouble(SPENT_STR);
+                int revnum = resultSet.getInt(REV_NUM_STR);
                 newCamper = new Camper(cId, firstName, lName, nName, budget, spent, revnum);
             }
         } catch (SQLException e) {
-            System.out.println("failed query: " + e.getMessage());
+            System.out.println(FAILED + e.getMessage());
         }
 
         return newCamper;
@@ -70,16 +69,16 @@ public class CamperFactory {
         try(Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
             while (resultSet.next()) {
-                int cId = resultSet.getInt("cid");
-                String fName = resultSet.getString("firstname");
-                String nName = resultSet.getString("nickname");
-                double budget = resultSet.getDouble("campstorebudget");
-                double spent = resultSet.getDouble("campstorespent");
-                int revnum = resultSet.getInt("revnum");
+                int cId = resultSet.getInt(ID_STR);
+                String fName = resultSet.getString(F_NAME_STR);
+                String nName = resultSet.getString(N_NAME_STR);
+                double budget = resultSet.getDouble(BUDGET_STR);
+                double spent = resultSet.getDouble(SPENT_STR);
+                int revnum = resultSet.getInt(REV_NUM_STR);
                 newCamper = new Camper(cId, fName, lastName, nName, budget, spent, revnum);
             }
         } catch (SQLException e) {
-            System.out.println("failed query: " + e.getMessage());
+            System.out.println(FAILED + e.getMessage());
         }
 
         return newCamper;
@@ -111,4 +110,14 @@ public class CamperFactory {
     String stringUpcaseFirst(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
     }
+
+    private static final String FAILED = "failed query: ";
+
+    private static final String ID_STR = "cid";
+    private static final String F_NAME_STR = "firstname";
+    private static final String L_NAME_STR = "lastname";
+    private static final String N_NAME_STR = "nickname";
+    private static final String BUDGET_STR = "campstorebudget";
+    private static final String SPENT_STR = "campstorespent";
+    private static final String REV_NUM_STR = "revnum";
 }

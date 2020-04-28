@@ -2,20 +2,15 @@ import org.jdesktop.swingx.prompt.PromptSupport;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 class CamperDataTerminal extends JFrame {
 
     private final CamperDataController controller;
-    private final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
     private JPanel headerPanel;
     private JPanel inputPanel;
 
     private JTextField camperSearchBox;
-    private JButton searchButton;
-    private JLabel searchStatus;
     private JLabel camperIdLabel;
     private JTextField camperFirstNameBox;
     private JTextField camperLastNameBox;
@@ -23,8 +18,6 @@ class CamperDataTerminal extends JFrame {
     private JTextField camperStoreBudgetBox;
     private JTextField camperStoreSpentBox;
     private JLabel camperRevNumLabel;
-    private JButton saveButton;
-    private JButton clearButton;
 
     private Camper currentCamper;
 
@@ -35,8 +28,8 @@ class CamperDataTerminal extends JFrame {
         JPanel mainPanel = new JPanel();
 //        mainPanel.setBackground(new Color(0, 100, 0));
         mainPanel.setLayout(new BorderLayout());
-        mainPanel.setPreferredSize(new Dimension(500, 600));
-        mainPanel.setMinimumSize(new Dimension(500, 600));
+        mainPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        mainPanel.setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 
         configureHeaderPanel();
         configureInputPanel();
@@ -47,8 +40,8 @@ class CamperDataTerminal extends JFrame {
 
 
         // set frame properties
-        this.setPreferredSize(new Dimension(500, 600));
-        this.setMinimumSize(new Dimension(500, 600));
+        this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        this.setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.add(mainPanel);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
@@ -69,13 +62,13 @@ class CamperDataTerminal extends JFrame {
     }
 
     void updateFields() {
-        camperIdLabel.setText("Camper ID: " + currentCamper.getCamperID());
+        camperIdLabel.setText(CAMPER_ID_STRING + currentCamper.getCamperID());
         camperFirstNameBox.setText(currentCamper.getFirstName());
         camperLastNameBox.setText(currentCamper.getLastName());
         camperNickNameBox.setText(currentCamper.getNickName());
         camperStoreBudgetBox.setText(String.valueOf(currentCamper.getCampStoreBudget()));
         camperStoreSpentBox.setText(String.valueOf(currentCamper.getCampStoreSpent()));
-        camperRevNumLabel.setText("RevNum: " + currentCamper.getRevNum());
+        camperRevNumLabel.setText(REV_NUM_STRING + currentCamper.getRevNum());
     }
 
     void saveClicked() {
@@ -104,9 +97,10 @@ class CamperDataTerminal extends JFrame {
     }
 
     void configureHeaderPanel() {
+        final int panelHeight = 50;
         headerPanel = new JPanel();
-        headerPanel.setPreferredSize(new Dimension(500, 50));
-        headerPanel.setMaximumSize(new Dimension(500, 50));
+        headerPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, panelHeight));
+        headerPanel.setMaximumSize(new Dimension(WINDOW_WIDTH, panelHeight));
 
         JLabel welcomeLabel = new JLabel("Welcome to the Camper Info System!");
 
@@ -114,40 +108,43 @@ class CamperDataTerminal extends JFrame {
     }
 
     void configureInputPanel() {
+        final int panelHeight = 425;
+        final int gridRows = 8;
+        final int gridColumns = 2;
         inputPanel = new JPanel();
-        inputPanel.setPreferredSize(new Dimension(500, 425));
-        inputPanel.setMinimumSize(new Dimension(500, 425));
-        inputPanel.setLayout(new GridLayout(8, 2));
+        inputPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, panelHeight));
+        inputPanel.setMinimumSize(new Dimension(WINDOW_WIDTH, panelHeight));
+        inputPanel.setLayout(new GridLayout(gridRows, gridColumns));
 
-        camperSearchBox = new JTextField(10);
+        camperSearchBox = new JTextField(TEXT_BOX_COLUMNS);
         PromptSupport.setPrompt("Enter search here", camperSearchBox);
 
-        searchButton = new JButton("Search");
+        JButton searchButton = new JButton("Search");
         searchButton.addActionListener(e -> searchClicked());
 
-        camperIdLabel = new JLabel("Camper ID: ");
+        camperIdLabel = new JLabel(CAMPER_ID_STRING);
 
-        camperFirstNameBox = new JTextField();
+        camperFirstNameBox = new JTextField(TEXT_BOX_COLUMNS);
         PromptSupport.setPrompt("First name", camperFirstNameBox);
 
-        camperLastNameBox = new JTextField();
+        camperLastNameBox = new JTextField(TEXT_BOX_COLUMNS);
         PromptSupport.setPrompt("Last name", camperLastNameBox);
 
-        camperNickNameBox = new JTextField();
+        camperNickNameBox = new JTextField(TEXT_BOX_COLUMNS);
         PromptSupport.setPrompt("Nickname", camperNickNameBox);
 
-        camperStoreBudgetBox = new JTextField();
+        camperStoreBudgetBox = new JTextField(TEXT_BOX_COLUMNS);
         PromptSupport.setPrompt("Store budget", camperStoreBudgetBox);
 
-        camperStoreSpentBox = new JTextField();
+        camperStoreSpentBox = new JTextField(TEXT_BOX_COLUMNS);
         PromptSupport.setPrompt("Store spent", camperStoreSpentBox);
 
-        camperRevNumLabel = new JLabel("RevNum: ");
+        camperRevNumLabel = new JLabel(REV_NUM_STRING);
 
-        saveButton = new JButton("Save changes");
+        JButton saveButton = new JButton("Save changes");
         saveButton.addActionListener(e -> saveClicked());
 
-        clearButton = new JButton("Clear form");
+        JButton clearButton = new JButton("Clear form");
         clearButton.addActionListener(e -> clearClicked());
 
         inputPanel.add(camperSearchBox);
@@ -172,12 +169,18 @@ class CamperDataTerminal extends JFrame {
     void clearClicked() {
         camperSearchBox.setText("");
         PromptSupport.setPrompt("Enter search here", camperSearchBox);
-        camperIdLabel.setText("Camper ID: ");
+        camperIdLabel.setText(CAMPER_ID_STRING);
         camperFirstNameBox.setText("");
         camperLastNameBox.setText("");
         camperNickNameBox.setText("");
         camperStoreBudgetBox.setText("");
         camperStoreSpentBox.setText("");
-        camperRevNumLabel.setText("RevNum: ");
+        camperRevNumLabel.setText(REV_NUM_STRING);
     }
+
+    private static final int WINDOW_WIDTH = 500;
+    private static final int WINDOW_HEIGHT = 500;
+    private static final int TEXT_BOX_COLUMNS = 20;
+    private static final String CAMPER_ID_STRING = "Camper ID: ";
+    private static final String REV_NUM_STRING = "RevNum: ";
 }
