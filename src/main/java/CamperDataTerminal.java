@@ -48,7 +48,6 @@ class CamperDataTerminal extends JFrame {
     }
 
     void searchClicked() {
-        clearClicked();
         try {
             currentCamper = controller.findCamperById(Integer.parseInt(camperSearchBox.getText()));
         } catch (NumberFormatException e) {
@@ -57,6 +56,7 @@ class CamperDataTerminal extends JFrame {
         if (currentCamper != null) {
             updateFields();
         } else {
+            clearClicked();
             System.out.println("No camper found");
             //todo: make this a gui notification, not terminal
         }
@@ -103,9 +103,11 @@ class CamperDataTerminal extends JFrame {
         headerPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, panelHeight));
         headerPanel.setMaximumSize(new Dimension(WINDOW_WIDTH, panelHeight));
 
-        JLabel welcomeLabel = new JLabel("Welcome to the Camper Info System!");
+        JLabel welcomeLabel = new JLabel("Welcome to the Camper Info System!\n");
+        JLabel instructionLabel = new JLabel("Search for a camper by ID, first name, or last name");
 
         headerPanel.add(welcomeLabel);
+        headerPanel.add(instructionLabel);
     }
 
     void configureInputPanel() {
@@ -168,8 +170,8 @@ class CamperDataTerminal extends JFrame {
     }
 
     void clearClicked() {
-        camperSearchBox.setText("");
-        PromptSupport.setPrompt("Enter search here", camperSearchBox);
+//        camperSearchBox.setText("");
+//        PromptSupport.setPrompt("Enter search here", camperSearchBox);
         camperIdLabel.setText(CAMPER_ID_STRING);
         camperFirstNameBox.setText("");
         camperLastNameBox.setText("");
