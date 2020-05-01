@@ -114,33 +114,33 @@ class CamperDataTerminal extends JFrame {
         final int panelHeight = 425;
         final int gridRows = 8;
         final int gridColumns = 2;
+
         inputPanel = new JPanel();
         inputPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, panelHeight));
         inputPanel.setMinimumSize(new Dimension(WINDOW_WIDTH, panelHeight));
         inputPanel.setLayout(new GridLayout(gridRows, gridColumns));
 
         camperSearchBox = new JTextField(TEXT_BOX_COLUMNS);
-        PromptSupport.setPrompt("Enter search here", camperSearchBox);
 
         JButton searchButton = new JButton("Search");
         searchButton.addActionListener(e -> searchClicked());
 
         camperIdLabel = new JLabel(CAMPER_ID_STRING);
-
         camperFirstNameBox = new JTextField(TEXT_BOX_COLUMNS);
-        PromptSupport.setPrompt("First name", camperFirstNameBox);
-
         camperLastNameBox = new JTextField(TEXT_BOX_COLUMNS);
-        PromptSupport.setPrompt("Last name", camperLastNameBox);
-
         camperNickNameBox = new JTextField(TEXT_BOX_COLUMNS);
-        PromptSupport.setPrompt("Nickname", camperNickNameBox);
-
         camperStoreBudgetBox = new JTextField(TEXT_BOX_COLUMNS);
-        PromptSupport.setPrompt("Store budget", camperStoreBudgetBox);
-
         camperStoreSpentBox = new JTextField(TEXT_BOX_COLUMNS);
+
+        // To run without Gradle, comment out this block
+        // as well as the PromptSupport import statement, line 1
+        PromptSupport.setPrompt("Enter search here", camperSearchBox);
+        PromptSupport.setPrompt("First name", camperFirstNameBox);
+        PromptSupport.setPrompt("Last name", camperLastNameBox);
+        PromptSupport.setPrompt("Nickname", camperNickNameBox);
+        PromptSupport.setPrompt("Store budget", camperStoreBudgetBox);
         PromptSupport.setPrompt("Store spent", camperStoreSpentBox);
+        // */
 
         camperRevNumLabel = new JLabel(REV_NUM_STRING);
 
