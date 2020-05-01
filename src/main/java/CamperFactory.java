@@ -1,13 +1,26 @@
 import java.sql.*;
 
+/**
+ * This class is the link between the GUI and database connection for
+ * the camper information system.
+ *
+ * @author Lauren Rose
+ * @version 1-May-2020
+ *
+ * Radford University, Dept of IT
+ */
 public class CamperFactory {
 
     private Connection con;
 
-    CamperFactory() {
+    /**
+     * General constructor
+     */
+    CamperFactory() {}
 
-    }
-
+    /**
+     * Establishes the db connection
+     */
     void connect() {
         final String url = "jdbc:oracle:thin:@worf.radford.edu:1521:itec3";
         final String user = "larose";
@@ -19,8 +32,14 @@ public class CamperFactory {
         } catch (SQLException e) {
             System.out.println("failed connection: " + e.getMessage());
         }
+        //todo: save u/n, pw to env somewhere, shouldn't be hardcoded
     }
 
+    /**
+     * Searches for a camper
+     * @param id the id of the camper to search for
+     * @return the camper that was found
+     */
     Camper getCamperById(int id) {
         Camper newCamper = null;
         String sqlQuery = String.format("SELECT * FROM campers WHERE cid = %d", id);
@@ -42,16 +61,31 @@ public class CamperFactory {
         return newCamper;
     }
 
+    /**
+     * Searches for a camper
+     * @param firstName the first name of the camper to search for
+     * @return the camper that was found
+     */
     Camper getCamperByFirstName(String firstName) {
         String sqlQuery = String.format("SELECT * FROM campers WHERE firstname = '%s'", stringUpcaseFirst(firstName));
         return generateCamper(sqlQuery);
     }
 
+    /**
+     * Searches for a camper
+     * @param lastName the last name of the camper to search for
+     * @return the camper that was found
+     */
     Camper getCamperByLastName(String lastName) {
         String sqlQuery = String.format("SELECT * FROM campers WHERE lastname = '%s'", stringUpcaseFirst(lastName));
         return generateCamper(sqlQuery);
     }
 
+    /**
+     * Makes a new camper object from a found database record
+     * @param sqlQuery query to search for camper
+     * @return the camper found by the search criteria, or null if none found
+     */
     Camper generateCamper(String sqlQuery) {
         try(Statement statement = con.createStatement();
             ResultSet resultSet = statement.executeQuery(sqlQuery)) {
@@ -71,6 +105,10 @@ public class CamperFactory {
         return null;
     }
 
+    /**
+     * Changes one or more fields of a record
+     * @param c the camper to change
+     */
     void editCamper(Camper c) {
         System.out.println("Beginning db update...");
         String sqlQuery = String.format(
@@ -94,12 +132,16 @@ public class CamperFactory {
         }
     }
 
+    /**
+     * Capitalized the first letter of a string, and lowercases the rest
+     * @param s incoming string
+     * @return formatted string
+     */
     String stringUpcaseFirst(String s) {
         return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
     }
 
     private static final String FAILED = "failed query: ";
-
     private static final String ID_STR = "cid";
     private static final String F_NAME_STR = "firstname";
     private static final String L_NAME_STR = "lastname";

@@ -1,8 +1,17 @@
 import org.jdesktop.swingx.prompt.PromptSupport;
-
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * This class contains the graphical user interface for the camper
+ * information system. It allows a user to search for a camper and edit
+ * the camper's information.
+ *
+ * @author Lauren Rose
+ * @version 1-May-2020
+ *
+ * Radford University, Dept of IT
+ */
 class CamperDataTerminal extends JFrame {
 
     private final CamperDataController controller;
@@ -21,12 +30,15 @@ class CamperDataTerminal extends JFrame {
 
     private Camper currentCamper;
 
+    /**
+     * Constructor, creates the GUI on the screen
+     * @param controller controller
+     */
     CamperDataTerminal(CamperDataController controller) {
         this.controller = controller;
 
         // main panel
         JPanel mainPanel = new JPanel();
-//        mainPanel.setBackground(new Color(0, 100, 0));
         mainPanel.setLayout(new BorderLayout());
         mainPanel.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         mainPanel.setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -46,6 +58,10 @@ class CamperDataTerminal extends JFrame {
         this.setVisible(true);
     }
 
+    /**
+     * Fires when the search button is clicked
+     * Processes the findCamperBy[value]
+     */
     void searchClicked() {
         try {
             currentCamper = controller.findCamperById(Integer.parseInt(camperSearchBox.getText()));
@@ -61,6 +77,9 @@ class CamperDataTerminal extends JFrame {
         }
     }
 
+    /**
+     * Populates form with found camper data
+     */
     void updateFields() {
         camperIdLabel.setText(CAMPER_ID_STRING + currentCamper.getCamperID());
         camperFirstNameBox.setText(currentCamper.getFirstName());
@@ -71,6 +90,10 @@ class CamperDataTerminal extends JFrame {
         camperRevNumLabel.setText(REV_NUM_STRING + currentCamper.getRevNum());
     }
 
+    /**
+     * Triggers when save button clicked
+     * Processes the save to the database
+     */
     void saveClicked() {
         if (!camperFirstNameBox.getText().equals(currentCamper.getFirstName())) {
             System.out.println("Updating first name...");
@@ -84,13 +107,23 @@ class CamperDataTerminal extends JFrame {
             System.out.println("Updating nickname...");
             currentCamper.setNickName(camperNickNameBox.getText());
         }
-        if (currentCamper.getCampStoreBudget() != Double.parseDouble(camperStoreBudgetBox.getText())) {
-            System.out.println("Updating budget...");
-            currentCamper.setCampStoreBudget(Double.parseDouble(camperStoreBudgetBox.getText()));
+        try {
+            if (currentCamper.getCampStoreBudget() != Double.parseDouble(camperStoreBudgetBox.getText())) {
+                System.out.println("Updating budget...");
+                currentCamper.setCampStoreBudget(Double.parseDouble(camperStoreBudgetBox.getText()));
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid budget");
+            camperStoreBudgetBox.setText(String.valueOf(currentCamper.getCampStoreBudget()));
         }
-        if (currentCamper.getCampStoreSpent() != Double.parseDouble(camperStoreSpentBox.getText())) {
-            System.out.println("Updating spent amount...");
-            currentCamper.setCampStoreSpent(Double.parseDouble(camperStoreSpentBox.getText()));
+        try {
+            if (currentCamper.getCampStoreSpent() != Double.parseDouble(camperStoreSpentBox.getText())) {
+                System.out.println("Updating spent amount...");
+                currentCamper.setCampStoreSpent(Double.parseDouble(camperStoreSpentBox.getText()));
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid spent");
+            camperStoreSpentBox.setText(String.valueOf(currentCamper.getCampStoreSpent()));
         }
         System.out.println("Saving to db...");
         int revNum = controller.processEditCamper(currentCamper);
@@ -99,6 +132,9 @@ class CamperDataTerminal extends JFrame {
         }
     }
 
+    /**
+     * Creates header panel
+     */
     void configureHeaderPanel() {
         final int panelHeight = 50;
         headerPanel = new JPanel();
@@ -112,6 +148,9 @@ class CamperDataTerminal extends JFrame {
         headerPanel.add(instructionLabel);
     }
 
+    /**
+     * Creates input panel
+     */
     void configureInputPanel() {
         final int panelHeight = 425;
         final int gridRows = 8;
@@ -171,6 +210,9 @@ class CamperDataTerminal extends JFrame {
         inputPanel.add(clearButton);
     }
 
+    /**
+     * Clears all form fields, except Search box
+     */
     void clearClicked() {
         camperIdLabel.setText(CAMPER_ID_STRING);
         camperFirstNameBox.setText("");
