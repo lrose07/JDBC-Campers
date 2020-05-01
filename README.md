@@ -45,4 +45,6 @@ For testing, the database has been populated with campers 101-104.
 
 ### Additional Notes
 
+The system does not currently support searching by name if there are multiple campers with the same name.
+
 You must be on a Radford University network or VPN for the database connection to be successful.
