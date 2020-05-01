@@ -38,7 +38,6 @@ class CamperDataTerminal extends JFrame {
         mainPanel.add(headerPanel, BorderLayout.NORTH);
         mainPanel.add(inputPanel, BorderLayout.SOUTH);
 
-
         // set frame properties
         this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -94,7 +93,10 @@ class CamperDataTerminal extends JFrame {
             currentCamper.setCampStoreSpent(Double.parseDouble(camperStoreSpentBox.getText()));
         }
         System.out.println("Saving to db...");
-        controller.processEditCamper(currentCamper);
+        int revNum = controller.processEditCamper(currentCamper);
+        if (revNum > 0) {
+            camperRevNumLabel.setText(REV_NUM_STRING + (revNum + 1));
+        }
     }
 
     void configureHeaderPanel() {
@@ -170,8 +172,6 @@ class CamperDataTerminal extends JFrame {
     }
 
     void clearClicked() {
-//        camperSearchBox.setText("");
-//        PromptSupport.setPrompt("Enter search here", camperSearchBox);
         camperIdLabel.setText(CAMPER_ID_STRING);
         camperFirstNameBox.setText("");
         camperLastNameBox.setText("");

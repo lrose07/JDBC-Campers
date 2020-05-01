@@ -40,12 +40,14 @@ public class CamperDataController {
         }
     }
 
-    void processEditCamper(Camper newCamper) {
+    int processEditCamper(Camper newCamper) {
         Camper cmpr2 = cf.getCamperById(camperId);
         if (cmpr2.getRevNum() == revNumOriginal) {
             System.out.println("RevNum check passed.\nUpdating camper...");
             cf.editCamper(newCamper);
+            return cmpr2.getRevNum();
         }
+        return -1;
     }
 
 //    void processAddCamper() {
