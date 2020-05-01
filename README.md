@@ -1,12 +1,12 @@
-##Camper Information System - JDBC Project
-####Lauren Rose
-####Radford University, Database I, Spr20
+## Camper Information System - JDBC Project
+#### Lauren Rose
+#### Radford University, Database I, Spr20
 
 All code herein is the original work of the author, and is submitted for a grade. Therefore, it is intended for the author only. Author is not responsible for any duplication or use by other students for their submitted coursework.
 
-##Instructions:
+## Instructions:
 
-###With Gradle
+### With Gradle
 
 To run as a gradle build:
 
@@ -20,7 +20,7 @@ From project root:
 
 #
 
-###Without Gradle
+### Without Gradle
 
 To run without Gradle, there are two options:
 
@@ -32,6 +32,6 @@ To only test functionality, you can run the `CamperSystem.jar` provided to run t
 
 #
 
-###Additional Notes
+### Additional Notes
 
 You must be on a Radford University network or VPN for the database connection to be successful.
