@@ -1,4 +1,4 @@
-import org.jdesktop.swingx.prompt.PromptSupport;
+//import org.jdesktop.swingx.prompt.PromptSupport;
 import javax.swing.*;
 import java.awt.*;
 
@@ -175,12 +175,12 @@ class CamperDataTerminal extends JFrame {
 
         // To run without Gradle, comment out this block
         // as well as the PromptSupport import statement, line 1
-        PromptSupport.setPrompt("Enter search here", camperSearchBox);
-        PromptSupport.setPrompt("First name", camperFirstNameBox);
-        PromptSupport.setPrompt("Last name", camperLastNameBox);
-        PromptSupport.setPrompt("Nickname", camperNickNameBox);
-        PromptSupport.setPrompt("Store budget", camperStoreBudgetBox);
-        PromptSupport.setPrompt("Store spent", camperStoreSpentBox);
+//        PromptSupport.setPrompt("Enter search here", camperSearchBox);
+//        PromptSupport.setPrompt("First name", camperFirstNameBox);
+//        PromptSupport.setPrompt("Last name", camperLastNameBox);
+//        PromptSupport.setPrompt("Nickname", camperNickNameBox);
+//        PromptSupport.setPrompt("Store budget", camperStoreBudgetBox);
+//        PromptSupport.setPrompt("Store spent", camperStoreSpentBox);
         // */
 
         camperRevNumLabel = new JLabel(REV_NUM_STRING);
